@@ -58,7 +58,7 @@ public class AlertRabbit {
         public void execute(JobExecutionContext context) {
             System.out.println("rabbit runs here...");
             Connection cn = (Connection) context.getJobDetail().getJobDataMap().get("connection");
-            try (PreparedStatement statement = cn.prepareStatement("insert into rabbit(create_date) values ('20-02-21')")) {
+            try (PreparedStatement statement = cn.prepareStatement("insert into rabbit(create_date) values ('1111')")) {
                 statement.execute();
             } catch (Exception e) {
                 e.printStackTrace();
