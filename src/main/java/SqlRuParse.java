@@ -11,14 +11,10 @@ public class SqlRuParse {
         Elements row = document.select(".postslisttopic");
         for (Element el : row) {
             Element href = el.child(0);
+            Element time = el.nextElementSibling().nextElementSibling().nextElementSibling().nextElementSibling();
             System.out.println(href.attr("href"));
             System.out.println(href.text());
-        }
-        Elements dateRow = document.select("altCol");
-        for (Element elRow : dateRow) {
-            Element time = elRow.child(0);
             System.out.println(time.text());
-
         }
     }
 }
