@@ -11,7 +11,7 @@ public class SqlRuParse {
         Elements row = document.select(".postslisttopic");
         for (Element el : row) {
             Element href = el.child(0);
-            Element time = el.nextElementSibling().nextElementSibling().nextElementSibling().nextElementSibling();
+            Element time = el.parent().child(5);
             System.out.println(href.attr("href"));
             System.out.println(href.text());
             System.out.println(time.text());
