@@ -7,44 +7,27 @@ public class SqlRuDateTimeParser implements DateTimeParser {
 
     @Override
     public LocalDateTime parse(String s) {
-        DateTimeFormatter formatterFull = DateTimeFormatter.ofPattern("dd MMMM yy, HH:mm");
-        LocalDateTime localDate = LocalDateTime.parse(s, formatterFull);
-        if (s.contains("вчера") || (s.contains("сегодня"))) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd, HH:mm");
-            LocalDateTime shortDate = LocalDateTime.parse(setShortDate(s), formatter);
-            return shortDate;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yy, HH:mm");
+        if (s.contains("сегодня")) {
+            return shortDate(s);
+        } else if (s.contains("вчера")) {
+            return shortDate(s).minusDays(1);
         }
-        return localDate;
+        return LocalDateTime.parse(s, formatter);
     }
-    private LocalDateTime setShortDate(String s) {
-        String time = s.split(",")[1];
-        int hours = Integer.parseInt(time.substring(1, 2));
-        int min = Integer.parseInt(time.split(":")[1]);
-        LocalDateTime rsl = null;
-        if (s.contains("вчера")) {
-            LocalDate yesterday = LocalDate.now().minusDays(1);
-            LocalTime localTime = LocalTime.of(hours,min);
-            rsl.of(yesterday, localTime);
-        } else if(s.contains("сегодня")) {
-            LocalDate toDay = LocalDate.now();
-            LocalTime localTime = LocalTime.of(hours, min);
-            rsl.of(toDay, localTime);
-        }
-        return rsl;
+    private LocalDateTime shortDate(String s) {
+        int hh = Integer.parseInt(s.split(" ")[1].substring(0,2));
+        int mm = Integer.parseInt(s.split(":")[1]);
+        LocalTime localTime = LocalTime.of(hh, mm);
+        LocalDate localDate = LocalDate.now();
+        return LocalDateTime.of(localDate, localTime);
     }
 
     public static void main(String[] args) {
         SqlRuDateTimeParser ob = new SqlRuDateTimeParser();
         String date1 = "11 июля 21, 20:20";
-        String date2 = "вчера, 11:39";
+        String date2 = "вчера, 12:39";
         System.out.println(ob.parse(date1));
         System.out.println(ob.parse(date2));
-
-        String time = date2.split(",")[1];
-        int hh = Integer.parseInt(time.substring(1, 2));
-        int mm = Integer.parseInt(time.split(":")[1]);
-        LocalDate localDate = LocalDate.now().minusDays(1);
-        LocalTime localTime = LocalTime.of(hh,mm);
-        System.out.println(LocalDateTime.of(localDate, localTime));
     }
 }
