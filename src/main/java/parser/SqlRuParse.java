@@ -3,16 +3,17 @@ package parser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 
 public class SqlRuParse {
-    public Post info(String link) throws Exception {
-        Post post = null;
-        Document document = Jsoup.connect(link).get();
-        Elements name = document.select("msgBody");
-        return null;
-
+    public Post info(String url) throws Exception {
+        Document document = Jsoup.connect(url).get();
+        Element title = document.select(".messageHeader").get(1);
+        Element description = document.select(".msgBody").get(1);
+        Element created = document.select("msgFooter").get(1);
+        String cutFooter = created.text().substring(1, 16);
+        SqlRuDateTimeParser sqlRuDateTimeParser = new SqlRuDateTimeParser();
+        return new Post(title.text(), url, description.text(), sqlRuDateTimeParser.parse(cutFooter));
     }
 
     public static void main(String[] args) throws Exception {
