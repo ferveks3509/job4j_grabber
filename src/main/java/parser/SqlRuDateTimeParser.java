@@ -1,19 +1,28 @@
 package parser;
 
 import java.time.*;
-import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SqlRuDateTimeParser implements DateTimeParser {
+    private final Map<String, Integer> month = new HashMap<>();
 
     @Override
     public LocalDateTime parse(String s) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yy, HH:mm");
         if (s.contains("сегодня")) {
             return shortDate(s);
         } else if (s.contains("вчера")) {
             return shortDate(s).minusDays(1);
         }
-        return LocalDateTime.parse(s, formatter);
+        initMonth();
+        String[] arrData = s.split(" ");
+        int years = Integer.parseInt(arrData[2].substring(0,1));
+        int month = this.month.get(arrData[1]);
+        int day = Integer.parseInt(arrData[0]);
+        int hours = Integer.parseInt(arrData[3].substring(0, 1));
+        int min = Integer.parseInt(arrData[3].split(":")[1]);
+
+        return LocalDateTime.of(years, month, day, hours, min);
     }
     private LocalDateTime shortDate(String s) {
         int hh = Integer.parseInt(s.split(" ")[1].substring(0,2));
@@ -23,11 +32,25 @@ public class SqlRuDateTimeParser implements DateTimeParser {
         return LocalDateTime.of(localDate, localTime);
     }
 
+    private void initMonth() {
+        month.put("янв", 1);
+        month.put("фев", 2);
+        month.put("мар", 3);
+        month.put("апр", 4);
+        month.put("май", 5);
+        month.put("июн", 6);
+        month.put("июл", 7);
+        month.put("авг", 8);
+        month.put("сен", 9);
+        month.put("окт", 10);
+        month.put("ноя", 11);
+        month.put("дек", 12);
+    }
     public static void main(String[] args) {
         SqlRuDateTimeParser ob = new SqlRuDateTimeParser();
-        String date1 = "11 июля 21, 20:20";
+        String s = "22 фев 16, 10:56";
         String date2 = "вчера, 12:39";
-        System.out.println(ob.parse(date1));
+        System.out.println(ob.parse(s));
         System.out.println(ob.parse(date2));
     }
 }

@@ -7,8 +7,16 @@ import org.jsoup.select.Elements;
 
 
 public class SqlRuParse {
+    public Post info(String link) throws Exception {
+        Post post = null;
+        Document document = Jsoup.connect(link).get();
+        Elements name = document.select("msgBody");
+        return null;
+
+    }
 
     public static void main(String[] args) throws Exception {
+        /*
         for (int i = 1; i <= 5; i++) {
             Document document = Jsoup.connect("https://www.sql.ru/forum/job-offers/" + i).get();
             Elements row = document.select(".postslisttopic");
@@ -20,5 +28,6 @@ public class SqlRuParse {
                 System.out.println(time.text());
             }
         }
+         */
     }
 }
