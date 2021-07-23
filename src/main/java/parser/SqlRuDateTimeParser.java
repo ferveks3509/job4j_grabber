@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SqlRuDateTimeParser implements DateTimeParser {
-    private final Map<String, Integer> month = new HashMap<>();
+    private static final Map<String, Integer> month = new HashMap<>();
 
     @Override
     public LocalDateTime parse(String s) {
@@ -45,12 +45,5 @@ public class SqlRuDateTimeParser implements DateTimeParser {
         month.put("окт", 10);
         month.put("ноя", 11);
         month.put("дек", 12);
-    }
-    public static void main(String[] args) {
-        SqlRuDateTimeParser ob = new SqlRuDateTimeParser();
-        String s = "22 фев 16, 10:56";
-        String date2 = "вчера, 12:39";
-        System.out.println(ob.parse(s));
-        System.out.println(ob.parse(date2));
     }
 }
