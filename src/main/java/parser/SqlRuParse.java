@@ -10,6 +10,11 @@ import java.util.List;
 
 
 public class SqlRuParse implements  Parse {
+    private final SqlRuDateTimeParser dateTimeParser;
+
+    public SqlRuParse(SqlRuDateTimeParser dateTimeParser) {
+        this.dateTimeParser = dateTimeParser;
+    }
 
     @Override
     public List<Post> list(String link) {
