@@ -10,11 +10,12 @@ import java.util.List;
 
 
 public class SqlRuParse implements  Parse {
-    private final SqlRuDateTimeParser dateTimeParser;
+    private final DateTimeParser dateTimeParser;
 
-    public SqlRuParse(SqlRuDateTimeParser dateTimeParser) {
+    public SqlRuParse(DateTimeParser dateTimeParser) {
         this.dateTimeParser = dateTimeParser;
     }
+
 
     @Override
     public List<Post> list(String link) {
@@ -42,8 +43,7 @@ public class SqlRuParse implements  Parse {
             Element description = document.select(".msgBody").get(1);
             Element created = document.select(".msgFooter").get(1);
             String cutFooter = created.text().substring(1, 16);
-            SqlRuDateTimeParser sqlRuDateTimeParser = new SqlRuDateTimeParser();
-            post = new Post(title.text(), url, description.text(), sqlRuDateTimeParser.parse(cutFooter));
+            post = new Post(title.text(), url, description.text(), dateTimeParser.parse(cutFooter));
         } catch (Exception e) {
             e.printStackTrace();
         }
