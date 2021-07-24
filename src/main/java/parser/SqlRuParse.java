@@ -40,7 +40,7 @@ public class SqlRuParse implements  Parse {
             Document document = Jsoup.connect(url).get();
             Element title = document.select(".messageHeader").get(1);
             Element description = document.select(".msgBody").get(1);
-            Element created = document.select("msgFooter").get(1);
+            Element created = document.select(".msgFooter").get(1);
             String cutFooter = created.text().substring(1, 16);
             SqlRuDateTimeParser sqlRuDateTimeParser = new SqlRuDateTimeParser();
             post = new Post(title.text(), url, description.text(), sqlRuDateTimeParser.parse(cutFooter));
